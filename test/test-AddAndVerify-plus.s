@@ -89,7 +89,7 @@ AddVerifyTestLoop:
         syscall
 
 
-        ### Now try with bad key
+ ### Now try with bad key
 AddVerifyNextCase:
         lw $t3, 4($t2)
         move $a2, $t3
@@ -160,5 +160,14 @@ AddVerifyTestDone:
         
 
         
-        ############# Put Code for AddAndVerify, IsCandidate, WordDecrypt Here
+############# Put Code for AddAndVerify, IsCandidate, WordDecrypt Here
+WordDecrypt:
+        li      $v1, 0
+        addu    $v0, $a0, $a1
+        addu    $v0, $v0, $a2
+        bgeu    $v0, $a1, NOCARRY
+        li      $v1, 1
+NOCARRY:
+        jr      $ra
 
+IsCandidate:
