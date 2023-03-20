@@ -124,4 +124,18 @@ NOCARRY:
         jr      $ra
 
 IsCandidate:
-
+        li      $v0, 1                  # Result is initially set to true
+        li      $t0, 255                # Bitmask to get lowest order bit
+LOOP:
+        and     $t1, $a0, $t0
+        beq     $t1, 0,   RETURN        # Message ends when 0 is read
+        bltu    $t1, 64,  ISOUTOFRANGE
+        bgtu    $t1, 90,  ISOUTOFRANGE
+        j       ENDIF
+ISOUTOFRANGE:
+        li      $v0, 0                  # Set flag to false
+ENDIF:
+        srl     $a0, $a0, 8
+        j       LOOP
+RETURN:
+        jr      $ra
