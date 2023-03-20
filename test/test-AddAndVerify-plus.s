@@ -171,3 +171,20 @@ NOCARRY:
         jr      $ra
 
 IsCandidate:
+        li      $v0, 1                  # Result is initially set to true
+        li      $t0, 255                # Bitmask to get lowest order bit
+        li      $t1, 0                  # Counter to track number of bytes read
+LOOP:
+        and     $t2, $a0, $t0
+        beq     $t1, 4,   RETURN        # Message ends when 0 is read
+        bltu    $t2, 64,  ISOUTOFRANGE
+        bgtu    $t2, 90,  ISOUTOFRANGE
+        j       ENDIF
+ISOUTOFRANGE:
+        li      $v0, 0                  # Set flag to false
+ENDIF:
+        srl     $a0, $a0, 8
+        addi    $t1, $t1, 1
+        j       LOOP
+RETURN:
+        jr      $ra
