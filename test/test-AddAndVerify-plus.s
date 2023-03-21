@@ -166,7 +166,7 @@ WordDecrypt:
         addu    $v0, $a0, $a1
         addu    $v0, $v0, $a2
         bgeu    $v0, $a1, NOCARRY
-        li      $v1, 0
+        li      $v1, 1
 NOCARRY:
         jr      $ra
 
