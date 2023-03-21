@@ -26,7 +26,7 @@ IsCandidateTestData:
         .word 1
         .asciiz "HOW?"
         .word 0
-        .asciiz "NOP["
+        .asciiz "NOP]"
         .word 0
 
 
@@ -125,19 +125,18 @@ NOCARRY:
 
 IsCandidate:
         li      $v0, 1                  # Result is initially set to true
-        li      $t0, 255                # Bitmask to get lowest order bit
-        li      $t1, 0                  # Counter to track number of bytes read
+        li      $t0, 0                  # Counter to track number of bytes read
 LOOP:
-        and     $t2, $a0, $t0
-        beq     $t1, 4,   RETURN        # Message ends when 0 is read
-        bltu    $t2, 64,  ISOUTOFRANGE
-        bgtu    $t2, 90,  ISOUTOFRANGE
+        andi    $t1, $a0, 255
+        beq     $t0, 4,   RETURN        # Exit after reading 4 bytes
+        bltu    $t1, 64,  ISOUTOFRANGE
+        bgtu    $t1, 90,  ISOUTOFRANGE
         j       ENDIF
 ISOUTOFRANGE:
         li      $v0, 0                  # Set flag to false
 ENDIF:
         srl     $a0, $a0, 8
-        addi    $t1, $t1, 1
+        addi    $t0, $t0, 1
         j       LOOP
 RETURN:
         jr      $ra
