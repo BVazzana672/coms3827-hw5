@@ -4,7 +4,7 @@ EncryptedPhrase: .word 0x5f7fb06, 0xfb06f2f8, 0xc0704fb, 0xf9fbf7f3, 0x6f306fb, 
 
 DecryptionSpace: .space 400 # 400 bytes of space, more than enough...
 
-AVDone:         .asciiz "\nALL DONE\n"
+EndMsg:         .asciiz "\n\n"
 
     .text
 main:
@@ -30,6 +30,8 @@ PRINTMSG:
         sw      $a0, 0($sp)
         la      $a0, DecryptionSpace
         li      $v0, 4
+        syscall
+        la      $a0, EndMsg
         syscall
         lw      $a0, 0($sp)
         addi    $sp, $sp, 4
